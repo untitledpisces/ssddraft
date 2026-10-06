@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | Singgah Sana</title>
+    <meta name="description" content="Frequently asked questions about staying at Singgah Sana — booking, check-in, dining, activities, children, pets and getting here.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mist': '#f3f1ec',
+                        'seafoam': '#AC1743',
+                        'moss': '#4f5c4e',
+                        'charcoal': '#2d2a26',
+                        'sand': '#e8e4dc',
+                        'bone': '#faf8f4',
+                        'ink': '#1a1917',
+                    },
+                    fontFamily: {
+                        serif: ['Marcellus', 'serif'],
+                        sans: ['"Work Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: auto; }
+        body {
+            background-color: #f3f1ec;
+            color: #2d2a26;
+            overflow-x: hidden;
+            overscroll-behavior: none;
+            -webkit-font-smoothing: antialiased;
+            font-feature-settings: "kern" 1, "liga" 1;
+        }
+
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+
+        .line-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: top;
+            padding-bottom: 0.12em;
+        }
+
+        ::selection { background-color: #AC1743; color: #f3f1ec; }
+
+        .nav-hidden { transform: translate3d(0, -100%, 0); }
+        .nav-visible { transform: translate3d(0, 0, 0); }
+        #navbar { text-shadow: 0 1px 12px rgba(0, 0, 0, 0.28); }
+
+        .texture-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.035"/></svg>');
+            pointer-events: none;
+        }
+
+        /* Typography */
+        .eyebrow {
+            font-size: 10px;
+            letter-spacing: 0.36em;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-family: 'Work Sans', sans-serif;
+        }
+        .display-title {
+            font-family: 'Marcellus', serif;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.02;
+        }
+        .body-text {
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 300;
+            font-size: 15px;
+            line-height: 1.85;
+            letter-spacing: 0.005em;
+        }
+
+        .rule-thin {
+            height: 1px;
+            background: rgba(45, 42, 38, 0.14);
+            width: 100%;
+        }
+
+        /* ===== CATEGORY NAV — horizontal pills ===== */
+        .cat-nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 4px 0;
+        }
+        .cat-nav::-webkit-scrollbar { display: none; }
+
+        .cat-pill {
+            flex: 0 0 auto;
+            padding: 10px 18px;
+            border: 1px solid rgba(45, 42, 38, 0.18);
+            background: transparent;
+            border-radius: 100px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: rgba(45, 42, 38, 0.55);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            white-space: nowrap;
+        }
+        .cat-pill:hover {
+            color: #2d2a26;
+            border-color: rgba(45, 42, 38, 0.5);
+        }
+        .cat-pill.is-active {
+            background: #2d2a26;
+            border-color: #2d2a26;
+            color: #f3f1ec;
+        }
+
+        /* ===== FAQ ACCORDION ===== */
+        .faq-item {
+            border-top: 1px solid rgba(45, 42, 38, 0.14);
+        }
+        .faq-item:last-child { border-bottom: 1px solid rgba(45, 42, 38, 0.14); }
+
+        .faq-question {
+            display: grid;
+            grid-template-columns: 40px 1fr 32px;
+            gap: 20px;
+            align-items: center;
+            padding: 30px 0;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            transition: padding-left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @media (min-width: 768px) {
+            .faq-question {
+                grid-template-columns: 60px 1fr 40px;
+                gap: 32px;
+                padding: 36px 0;
+            }
+        }
+        .faq-question:hover {
+            padding-left: 8px;
+        }
+
+        .faq-question__num {
+            font-family: 'Marcellus', serif;
+            font-size: 13px;
+            letter-spacing: 0.4em;
+            color: #4f5c4e;
+        }
+        .faq-question__text {
+            font-family: 'Marcellus', serif;
+            font-weight: 400;
+            font-size: 1.35rem;
+            line-height: 1.25;
+            color: #2d2a26;
+            letter-spacing: -0.005em;
+            transition: color 0.4s;
+        }
+        @media (min-width: 768px) {
+            .faq-question__text { font-size: 1.65rem; }
+        }
+        .faq-question:hover .faq-question__text {
+            color: #AC1743;
+        }
+
+        .faq-question__icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            flex-shrink: 0;
+            justify-self: end;
+        }
+        .faq-question__icon::before,
+        .faq-question__icon::after {
+            content: '';
+            position: absolute;
+            background: #2d2a26;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+        }
+        .faq-question__icon::before {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            transform: translateY(-50%);
+        }
+        .faq-question__icon::after {
+            left: 50%;
+            top: 0;
+            width: 1px;
+            height: 100%;
+            transform: translateX(-50%);
+        }
+        .faq-item.is-open .faq-question__icon::after {
+            transform: translateX(-50%) rotate(90deg);
+            opacity: 0;
+        }
+        .faq-item.is-open .faq-question__text {
+            color: #AC1743;
+        }
+
+        .faq-answer {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .faq-answer__inner {
+            padding: 0 0 36px;
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .faq-answer__inner {
+                grid-template-columns: 60px 1fr;
+                gap: 32px;
+                padding: 0 0 44px;
+            }
+        }
+        .faq-answer__text {
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14.5px;
+            line-height: 1.85;
+            color: rgba(45, 42, 38, 0.7);
+            max-width: 640px;
+        }
+        .faq-answer__text p + p { margin-top: 14px; }
+        .faq-answer__text a {
+            color: #2d2a26;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 4px;
+            transition: color 0.3s;
+        }
+        .faq-answer__text a:hover { color: #AC1743; }
+
+        /* ===== CATEGORY HEADING (scroll anchor) ===== */
+        .faq-category {
+            padding-top: 60px;
+            padding-bottom: 20px;
+        }
+        @media (min-width: 768px) {
+            .faq-category { padding-top: 80px; padding-bottom: 24px; }
+        }
+        .faq-category__label {
+            font-family: 'Marcellus', serif;
+            font-size: 2rem;
+            line-height: 1;
+            color: #2d2a26;
+            letter-spacing: -0.01em;
+        }
+        @media (min-width: 768px) {
+            .faq-category__label { font-size: 2.5rem; }
+        }
+        .faq-category__count {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 10px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: rgba(45, 42, 38, 0.4);
+            margin-left: 16px;
+            vertical-align: middle;
+        }
+
+        /* ===== CONTACT BLOCK ===== */
+        .contact-card {
+            padding: 28px 26px;
+            border: 1px solid rgba(45, 42, 38, 0.14);
+            transition: background 0.4s, border-color 0.4s;
+            display: block;
+            text-decoration: none;
+        }
+        .contact-card:hover {
+            background: rgba(79, 92, 78, 0.04);
+            border-color: rgba(79, 92, 78, 0.35);
+        }
+        .contact-card__icon {
+            width: 22px;
+            height: 22px;
+            stroke: #4f5c4e;
+            stroke-width: 1.4;
+            fill: none;
+            margin-bottom: 20px;
+        }
+        .contact-card__label {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(45, 42, 38, 0.45);
+            margin-bottom: 8px;
+        }
+        .contact-card__value {
+            font-family: 'Marcellus', serif;
+            font-size: 1.35rem;
+            color: #2d2a26;
+            transition: color 0.4s;
+        }
+        .contact-card:hover .contact-card__value { color: #AC1743; }
+
+        /* ===== Inline link ===== */
+        .link-aman {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 10.5px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            font-weight: 400;
+            text-decoration: none;
+            color: #2d2a26;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(45, 42, 38, 0.25);
+            transition: gap 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s, color 0.4s;
+        }
+        .link-aman:hover { gap: 18px; border-color: #2d2a26; }
+        .link-aman--light {
+            color: #f3f1ec;
+            border-color: rgba(243, 241, 236, 0.35);
+        }
+        .link-aman--light:hover { border-color: #f3f1ec; }
+
+        /* ===== Nav ===== */
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0; height: 1px;
+            background: currentColor;
+            transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .nav-link:hover::after { width: 100%; left: 0; }
+        .nav-link.is-active::after { width: 100%; left: 0; }
+
+        /* ===== Live chat ===== */
+        .chat-button {
+            position: fixed;
+            bottom: 28px; left: 28px;
+            z-index: 60;
+            height: 50px;
+            padding: 0 20px 0 16px;
+            background: #2d2a26;
+            color: #f3f1ec;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(45, 42, 38, 0.24);
+            transition: background 0.4s, transform 0.4s, box-shadow 0.4s, opacity 0.4s;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 10.5px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            font-weight: 500;
+            border: none;
+        }
+        .chat-button:hover { background: #AC1743; transform: translateY(-2px); }
+        .chat-button svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.6; fill: none; }
+        .chat-button.is-hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+
+        .chat-panel {
+            position: fixed;
+            bottom: 90px; left: 28px;
+            z-index: 61;
+            width: 380px;
+            max-width: calc(100vw - 56px);
+            height: 580px;
+            max-height: calc(100vh - 130px);
+            background: #f3f1ec;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 30px 70px rgba(45, 42, 38, 0.38);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(16px);
+            transform-origin: bottom left;
+            transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                        visibility 0.4s,
+                        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .chat-panel.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .chat-header {
+            background: #2d2a26;
+            color: #f3f1ec;
+            padding: 22px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .chat-header-title { font-family: 'Marcellus', serif; font-size: 15px; letter-spacing: 0.05em; }
+        .chat-header-status {
+            font-size: 9.5px;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: rgba(243, 241, 236, 0.55);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            font-family: 'Work Sans', sans-serif;
+        }
+        .chat-header-status::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: #AC1743;
+            animation: chatStatusPulse 2s ease-in-out infinite;
+        }
+        @keyframes chatStatusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .chat-close {
+            background: none; border: none;
+            color: #f3f1ec; cursor: pointer;
+            padding: 4px; opacity: 0.7;
+            transition: opacity 0.3s;
+            display: flex; align-items: center;
+        }
+        .chat-close:hover { opacity: 1; }
+        .chat-close svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.4; fill: none; }
+
+        .chat-body {
+            flex: 1; overflow-y: auto;
+            padding: 24px 22px;
+            display: flex; flex-direction: column; gap: 14px;
+            background: #f3f1ec;
+        }
+        .chat-body::-webkit-scrollbar { width: 3px; }
+        .chat-body::-webkit-scrollbar-thumb { background: rgba(79, 92, 78, 0.2); }
+
+        .chat-msg {
+            max-width: 88%;
+            font-size: 13.5px;
+            line-height: 1.55;
+            animation: msgIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        @keyframes msgIn { to { opacity: 1; transform: translateY(0); } }
+        .chat-msg--bot { align-self: flex-start; }
+        .chat-msg--user { align-self: flex-end; }
+        .chat-msg__bubble { padding: 12px 16px; font-family: 'Work Sans', sans-serif; font-weight: 300; }
+        .chat-msg--bot .chat-msg__bubble { background: #ffffff; color: #2d2a26; border-left: 2px solid #AC1743; }
+        .chat-msg--user .chat-msg__bubble { background: #2d2a26; color: #f3f1ec; }
+        .chat-msg__time {
+            font-size: 9px;
+            color: rgba(45, 42, 38, 0.35);
+            margin-top: 5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .chat-msg--user .chat-msg__time { text-align: right; }
+
+        .chat-typing {
+            align-self: flex-start;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-left: 2px solid #AC1743;
+            display: flex; gap: 4px; align-items: center;
+            opacity: 0;
+            animation: msgIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .chat-typing span {
+            width: 5px; height: 5px;
+            background: #AC1743; border-radius: 50%;
+            opacity: 0.35;
+            animation: typingBounce 1.2s ease-in-out infinite;
+        }
+        .chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+        .chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
+
+        .chat-quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .chat-quick button {
+            background: transparent;
+            border: 1px solid rgba(79, 92, 78, 0.25);
+            color: #4f5c4e;
+            padding: 7px 13px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
+        }
+        .chat-quick button:hover { background: #AC1743; color: #f3f1ec; border-color: #AC1743; }
+
+        .chat-input-wrap {
+            border-top: 1px solid rgba(79, 92, 78, 0.12);
+            padding: 16px 20px;
+            background: #f3f1ec;
+            flex-shrink: 0;
+        }
+        .chat-input-row { display: flex; gap: 8px; align-items: flex-end; }
+        .chat-input {
+            flex: 1; border: none; background: transparent;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 13.5px;
+            color: #2d2a26;
+            padding: 8px 0;
+            resize: none;
+            outline: none;
+            max-height: 80px;
+            line-height: 1.5;
+        }
+        .chat-input::placeholder { color: rgba(45, 42, 38, 0.35); }
+        .chat-send {
+            width: 36px; height: 36px;
+            background: #2d2a26;
+            color: #f3f1ec;
+            border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s, transform 0.3s;
+            flex-shrink: 0;
+        }
+        .chat-send:hover { background: #AC1743; transform: translateY(-1px); }
+        .chat-send svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .chat-send:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        .chat-footer {
+            text-align: center;
+            padding: 10px 20px 14px;
+            font-size: 9px;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: rgba(79, 92, 78, 0.45);
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        /* WhatsApp */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 28px; right: 28px;
+            z-index: 60;
+            height: 50px; width: 50px;
+            background: #2d2a26;
+            color: #f3f1ec;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(45, 42, 38, 0.24);
+            transition: background 0.4s, transform 0.4s;
+            border: none; text-decoration: none;
+        }
+        .whatsapp-button:hover { background: #AC1743; transform: translateY(-2px); }
+        .whatsapp-button svg { width: 24px; height: 24px; fill: currentColor; }
+
+        /* Footer */
+        .footer-link {
+            display: inline-block;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: rgba(243, 241, 236, 0.65);
+            transition: color 0.4s, padding-left 0.4s;
+            position: relative;
+        }
+        .footer-link:hover { color: #f3f1ec; padding-left: 10px; }
+        .footer-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0; height: 1px;
+            background: #AC1743;
+            transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .footer-link:hover::before { width: 6px; }
+
+        @media (max-width: 640px) {
+            .chat-panel { width: 100vw; height: 100vh; max-width: none; max-height: none; bottom: 0; right: 0; top: 0; left: 0; }
+            .chat-button { bottom: 20px; left: 20px; height: 44px; padding: 0 14px 0 12px; font-size: 9.5px; }
+            body.chat-open .chat-button { display: none; }
+            .whatsapp-button { bottom: 20px; right: 20px; height: 44px; width: 44px; }
+        }
+    </style>
+</head>
+<body class="font-sans font-light bg-mist">
+
+    <!-- ============================================================
+         LOADER — SAMA PERSIS DENGAN index.html
+    ============================================================ -->
+    <div id="loader" class="fixed inset-0 z-[100] bg-charcoal flex items-center justify-center text-mist flex-col pointer-events-none">
+        <img id="loader-logo"
+             src="https://raw.githubusercontent.com/untitledpisces/i-ma-ge/refs/heads/main/img1/logo-singgahsana-white2.png"
+             alt="Singgah Sana"
+             class="h-24 md:h-36 lg:h-44 w-auto opacity-0 transform scale-110">
+    </div>
+
+    <!-- ============================================================
+         NAVBAR — SAMA PERSIS DENGAN index.html
+    ============================================================ -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-40 bg-transparent px-6 md:px-12 pt-7 pb-5 transition-transform duration-500 nav-visible">
+        <div class="grid grid-cols-12 items-center">
+
+            <div class="col-span-6 md:col-span-3 flex items-center">
+                <a href="index.html" aria-label="Singgah Sana — Home" class="inline-block">
+                    <img src="https://raw.githubusercontent.com/untitledpisces/i-ma-ge/refs/heads/main/img1/logo-singgahsana-white.png"
+                         alt="Singgah Sana"
+                         class="h-14 md:h-[4.5rem] w-auto" />
+                </a>
+            </div>
+
+            <div class="col-span-6 md:col-span-6 hidden md:flex justify-center gap-8 text-[10.5px] tracking-[0.28em] uppercase text-mist font-medium">
+                <a href="the-estate.html" class="hover:text-mist/70 transition-colors duration-300">The Estate</a>
+                <a href="stay.html" class="hover:text-mist/70 transition-colors duration-300">Stay</a>
+                <a href="things-to-do.html" class="hover:text-mist/70 transition-colors duration-300">Things to Do</a>
+                <a href="moments.html" class="hover:text-mist/70 transition-colors duration-300">Moments</a>
+                <a href="gallery.html" class="hover:text-mist/70 transition-colors duration-300">Gallery</a>
+            </div>
+
+            <div class="col-span-6 md:col-span-3 flex justify-end">
+                <a href="#" data-open-booking
+                   class="inline-flex items-center justify-center border border-mist text-mist px-7 py-3 text-[10px] tracking-[0.3em] uppercase hover:bg-mist hover:text-charcoal transition-all duration-300">
+                    Reserve
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="smooth-wrapper" class="bg-mist">
+        <div id="smooth-content">
+
+            <!-- ============================================================
+                 HERO — SAMA PERSIS DENGAN index.html
+            ============================================================ -->
+            <section id="home" class="relative w-full h-screen overflow-hidden bg-charcoal flex flex-col justify-end">
+                <div class="absolute inset-0 z-0">
+                    <video
+                        id="heroVideo"
+                        class="absolute inset-0 w-full h-full object-cover"
+                        autoplay muted loop playsinline
+                        preload="metadata"
+                        poster="https://raw.githubusercontent.com/untitledpisces/i-ma-ge/refs/heads/main/img1/img_0002_compress.jpeg">
+                    </video>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/55 z-10"></div>
+
+                <div class="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-6 md:px-12 pt-32 pb-32">
+                    <h1 class="split-text font-serif text-4xl md:text-6xl lg:text-[4.5rem] leading-[1.1] text-mist tracking-tight max-w-3xl">
+                        FAQ</em>
+                    </h1>
+                    <p class="split-text-p text-mist/70 font-light text-sm md:text-base max-w-md mt-10 leading-relaxed">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                    </p>
+                    <div class="mt-14">
+                        <a href="#" class="inline-flex items-center gap-4 text-mist text-[11px] tracking-[0.34em] uppercase pb-3 border-b border-mist/40 hover:border-mist transition-colors duration-300">
+                            Discover FAQ
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 FAQ HERO — Minimal editorial (content asli faq-blmfix)
+            ============================================================ -->
+            <section class="pt-32 md:pt-44 pb-16 md:pb-20 px-6 md:px-12 bg-mist">
+                <div class="max-w-[1200px] mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-end">
+
+                        <div class="lg:col-span-7">
+                            <span class="eyebrow text-moss/70 mb-6 block reveal-fade">Frequently Asked</span>
+                            <h1 class="display-title split-text text-[3rem] md:text-[4.5rem] lg:text-[5.5rem] text-charcoal leading-[0.98]">
+                                Questions,<br>answered.
+                            </h1>
+                        </div>
+
+                        <div class="lg:col-span-5">
+                            <p class="body-text text-charcoal/65 reveal-fade">
+                                Everything you might want to know before you arrive — from booking and check-in, to dining, activities, children, pets and getting here. If you don't find what you need, our team is a message away.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- Category filter pills -->
+                    <div class="mt-14 md:mt-20">
+                        <div class="rule-thin mb-6"></div>
+                        <div class="cat-nav" id="catNav">
+                            <button class="cat-pill is-active" data-cat="all">All</button>
+                            <button class="cat-pill" data-cat="booking">Booking & Rates</button>
+                            <button class="cat-pill" data-cat="stay">The Stay</button>
+                            <button class="cat-pill" data-cat="dining">Dining</button>
+                            <button class="cat-pill" data-cat="activities">Activities</button>
+                            <button class="cat-pill" data-cat="family">Children & Pets</button>
+                            <button class="cat-pill" data-cat="getting-here">Getting Here</button>
+                        </div>
+                        <div class="rule-thin mt-6"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 FAQ CONTENT
+            ============================================================ -->
+            <section class="pb-24 md:pb-32 px-6 md:px-12 bg-mist">
+                <div class="max-w-[1200px] mx-auto">
+
+                    <!-- ========== BOOKING & RATES ========== -->
+                    <div class="faq-category reveal-fade" data-category="booking">
+                        <span class="faq-category__label">Booking & Rates<span class="faq-category__count">04</span></span>
+                    </div>
+
+                    <div class="faq-list" data-category="booking">
+
+                        <div class="faq-item" data-cat="booking">
+                            <button class="faq-question">
+                                <span class="faq-question__num">01</span>
+                                <span class="faq-question__text">How do I reserve a pavilion?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>You can reserve directly through our website — choose your dates, select a pavilion, and submit an enquiry. Our team will confirm availability and rates within the day.</p>
+                                        <p>For special arrangements — weddings, corporate retreats or full-estate buyouts — please reach us at <a href="mailto:hello@singgah-sana.com">hello@singgah-sana.com</a> and we'll respond with a tailored proposal.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="booking">
+                            <button class="faq-question">
+                                <span class="faq-question__num">02</span>
+                                <span class="faq-question__text">What are the rates, and what's included?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Rates start from RM 750 per night for Rumah Bunga, and up to RM 1,200 per night for Rumah Ibu. All rates include a catered breakfast each morning, daily housekeeping, and full access to the pool, gardens and pond.</p>
+                                        <p>Final pricing is confirmed by our team based on your dates and party size, and includes applicable taxes and services.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="booking">
+                            <button class="faq-question">
+                                <span class="faq-question__num">03</span>
+                                <span class="faq-question__text">How do I pay, and what's the deposit?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>A 50% deposit confirms your reservation. The balance is due 14 days before arrival. We accept credit and debit cards, FPX online banking, and bank transfer.</p>
+                                        <p>A confirmation email with your booking details and receipt will be sent once payment is received.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="booking">
+                            <button class="faq-question">
+                                <span class="faq-question__num">04</span>
+                                <span class="faq-question__text">What is your cancellation policy?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Free cancellation up to 14 days before arrival. Within 14 days of arrival, the deposit is non-refundable. Cancellation terms are confirmed at the time of booking and included in your reservation.</p>
+                                        <p>We recommend travel insurance for any unplanned changes.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ========== THE STAY ========== -->
+                    <div class="faq-category reveal-fade" data-category="stay">
+                        <span class="faq-category__label">The Stay<span class="faq-category__count">04</span></span>
+                    </div>
+
+                    <div class="faq-list" data-category="stay">
+
+                        <div class="faq-item" data-cat="stay">
+                            <button class="faq-question">
+                                <span class="faq-question__num">05</span>
+                                <span class="faq-question__text">What time is check-in and check-out?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Check-in from 3:00 PM. Check-out by 12:00 PM. Early check-in or late check-out may be arranged on request, subject to availability — just let us know in advance.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="stay">
+                            <button class="faq-question">
+                                <span class="faq-question__num">06</span>
+                                <span class="faq-question__text">Is there a minimum stay?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Two nights minimum on weekends. Three nights on public holidays and peak seasons. Longer minimums may apply over festive periods — our team will confirm at the time of booking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="stay">
+                            <button class="faq-question">
+                                <span class="faq-question__num">07</span>
+                                <span class="faq-question__text">What's included in each pavilion?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Every pavilion includes organic cotton bedding and robes, a mosquito net, an in-room safe, filtered drinking water, and premium toiletries. All rooms have air conditioning and a private verandah or deck.</p>
+                                        <p>Full pavilion details — including amenities, inclusions and rates — are on the <a href="stay.html">Stay</a> page.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="stay">
+                            <button class="faq-question">
+                                <span class="faq-question__num">08</span>
+                                <span class="faq-question__text">Can I book the whole estate exclusively?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Yes. Full-estate buyouts are available and often preferred for weddings, corporate retreats, multi-family gatherings and workshops. When the estate is reserved, no other guests are on the property.</p>
+                                        <p>See <a href="moments.html">Moments</a> for capacity details, or write to us for a tailored proposal.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ========== DINING ========== -->
+                    <div class="faq-category reveal-fade" data-category="dining">
+                        <span class="faq-category__label">Dining<span class="faq-category__count">03</span></span>
+                    </div>
+
+                    <div class="faq-list" data-category="dining">
+
+                        <div class="faq-item" data-cat="dining">
+                            <button class="faq-question">
+                                <span class="faq-question__num">09</span>
+                                <span class="faq-question__text">Is breakfast included?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Yes — breakfast is included with every stay. It's served at the open-air dining pavilion, with local fruit, eggs from the valley, and coffee or tea. We can adjust for dietary preferences with advance notice.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="dining">
+                            <button class="faq-question">
+                                <span class="faq-question__num">10</span>
+                                <span class="faq-question__text">Can we arrange lunch and dinner?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Yes. Our private chef can prepare lunch and dinner throughout your stay — a mix of local and international dishes, planned with you ahead of arrival. Please allow 24 hours' notice for special menus.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="dining">
+                            <button class="faq-question">
+                                <span class="faq-question__num">11</span>
+                                <span class="faq-question__text">Do you cater for dietary requirements?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Yes. We can arrange vegetarian, vegan, halal, and allergy-aware menus — just let us know your requirements when you book, or at least 24 hours before your meal. Our chef will confirm details with you directly.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ========== ACTIVITIES ========== -->
+                    <div class="faq-category reveal-fade" data-category="activities">
+                        <span class="faq-category__label">Activities<span class="faq-category__count">03</span></span>
+                    </div>
+
+                    <div class="faq-list" data-category="activities">
+
+                        <div class="faq-item" data-cat="activities">
+                            <button class="faq-question">
+                                <span class="faq-question__num">12</span>
+                                <span class="faq-question__text">What can we do on the estate?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>On the estate: sunrise yoga on the deck, fishing at the pond (fresh tilapia, catch and release), swimming, reading on the verandah, walking the four acres of grounds, and long, unhurried meals. In-villa massage can be arranged on request.</p>
+                                        <p>See <a href="things-to-do.html">Things to Do</a> for the full list.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="activities">
+                            <button class="faq-question">
+                                <span class="faq-question__num">13</span>
+                                <span class="faq-question__text">What is there to do nearby?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Waterfalls and jungle treks, river bathing and picnics, organic farm visits, natural hot springs, and quiet road cycling through the kampung hills — all within a short drive of the estate.</p>
+                                        <p>Our team is happy to arrange guides, drivers, or a suggested itinerary.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="activities">
+                            <button class="faq-question">
+                                <span class="faq-question__num">14</span>
+                                <span class="faq-question__text">Can you arrange a massage or wellness session?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Yes. In-villa massage — traditional Malay and deep-tissue treatments — can be arranged in your pavilion. We also work with visiting wellness practitioners for yoga, breathwork and multi-day retreats.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ========== CHILDREN & PETS ========== -->
+                    <div class="faq-category reveal-fade" data-category="family">
+                        <span class="faq-category__label">Children & Pets<span class="faq-category__count">02</span></span>
+                    </div>
+
+                    <div class="faq-list" data-category="family">
+
+                        <div class="faq-item" data-cat="family">
+                            <button class="faq-question">
+                                <span class="faq-question__num">15</span>
+                                <span class="faq-question__text">Are children welcome?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Families are very welcome. Please let us know the ages of your children and any specific needs ahead of your stay — we can prepare cots, high chairs, or simple bedding arrangements on request.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="family">
+                            <button class="faq-question">
+                                <span class="faq-question__num">16</span>
+                                <span class="faq-question__text">Can I bring my pet?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>We're currently not able to accommodate pets, to protect the estate's gardens, the pond, and the surrounding wildlife. Thank you for understanding.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ========== GETTING HERE ========== -->
+                    <div class="faq-category reveal-fade" data-category="getting-here">
+                        <span class="faq-category__label">Getting Here<span class="faq-category__count">03</span></span>
+                    </div>
+
+                    <div class="faq-list" data-category="getting-here">
+
+                        <div class="faq-item" data-cat="getting-here">
+                            <button class="faq-question">
+                                <span class="faq-question__num">17</span>
+                                <span class="faq-question__text">How do I get to Singgah Sana?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Singgah Sana is in Kampung Janda Baik, Bentong, Pahang — about an hour's drive from Kuala Lumpur, through the Bentong hills. Our address is No.3 Lorong Cheringin, Kampung Janda Baik, 28750 Bentong, Pahang.</p>
+                                        <p>We'll send detailed driving directions when your booking is confirmed. <a href="https://maps.app.goo.gl/U5hAkqrDFPQwzhny7" target="_blank" rel="noopener">Open in Maps →</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="getting-here">
+                            <button class="faq-question">
+                                <span class="faq-question__num">18</span>
+                                <span class="faq-question__text">Can you arrange airport transfers?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Yes. We can arrange private transfers from Kuala Lumpur International Airport (KLIA), Sultan Abdul Aziz Shah Airport (Subang), or from anywhere in the Klang Valley. Just share your flight details or pickup address when you book.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-cat="getting-here">
+                            <button class="faq-question">
+                                <span class="faq-question__num">19</span>
+                                <span class="faq-question__text">Is there parking at the estate?</span>
+                                <span class="faq-question__icon"></span>
+                            </button>
+                            <div class="faq-answer">
+                                <div class="faq-answer__inner">
+                                    <span></span>
+                                    <div class="faq-answer__text">
+                                        <p>Yes — private, on-site parking is available within the estate grounds for guests arriving by car. If you're bringing more than two vehicles, please let us know in advance so we can plan space accordingly.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 STILL HAVE QUESTIONS — contact cards
+            ============================================================ -->
+            <section class="py-24 md:py-32 px-6 md:px-12 bg-sand relative overflow-hidden">
+                <div class="absolute inset-0 texture-overlay opacity-30"></div>
+
+                <div class="max-w-[1200px] mx-auto relative z-10">
+
+                    <div class="mb-14 md:mb-18">
+                        <span class="eyebrow text-moss/70 mb-6 block reveal-fade">Still Wondering</span>
+                        <h2 class="display-title split-text text-[2.25rem] md:text-[3.25rem] text-charcoal leading-[1.05] max-w-2xl">
+                            If we haven't answered your question, just ask.
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+
+                        <a href="mailto:hello@singgah-sana.com" class="contact-card reveal-fade">
+                            <svg class="contact-card__icon" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9 6 9-6M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2z"/></svg>
+                            <div class="contact-card__label">Email us</div>
+                            <div class="contact-card__value">hello@singgah-sana.com</div>
+                        </a>
+
+                        <a href="https://wa.me/60166515532" target="_blank" rel="noopener" class="contact-card reveal-fade">
+                            <svg class="contact-card__icon" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                            <div class="contact-card__label">WhatsApp</div>
+                            <div class="contact-card__value">+60 16 651 5532</div>
+                        </a>
+
+                        <a href="tel:+60166515532" class="contact-card reveal-fade">
+                            <svg class="contact-card__icon" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.89.37 1.76.72 2.58a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.5-1.5a2 2 0 012.11-.45c.82.35 1.69.59 2.58.72A2 2 0 0122 16.92z"/></svg>
+                            <div class="contact-card__label">Call us</div>
+                            <div class="contact-card__value">+60 16 651 5532</div>
+                        </a>
+
+                    </div>
+
+                    <div class="mt-14 md:mt-20 text-center reveal-fade">
+                        <p class="body-text text-charcoal/55 mb-6">
+                            Or explore more about the estate.
+                        </p>
+                        <div class="flex flex-wrap items-center justify-center gap-8">
+                            <a href="the-estate.html" class="link-aman">The Estate <span>→</span></a>
+                            <a href="stay.html" class="link-aman">Stay <span>→</span></a>
+                            <a href="things-to-do.html" class="link-aman">Things to Do <span>→</span></a>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 FOOTER — SAMA PERSIS DENGAN index.html
+            ============================================================ -->
+            <footer class="bg-charcoal text-mist pt-20 pb-12 px-6 md:px-12 relative overflow-hidden">
+                <div class="absolute inset-0 texture-overlay opacity-30"></div>
+
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pb-16 border-b border-mist/15">
+
+                        <div class="lg:col-span-5">
+                            <span class="eyebrow text-seafoam mb-8 block reveal-fade">Enquire</span>
+                            <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl mb-8 leading-[1.08] text-mist tracking-tight split-text">
+                                Plan your<br><em class="text-seafoam italic">stay.</em>
+                            </h2>
+                            <p class="text-mist/60 font-light text-base max-w-md reveal-fade leading-[1.75]">
+                                Tell us your preferred dates and party size, and our team will confirm availability and rates within the day.
+                            </p>
+                        </div>
+
+                        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-10 lg:gap-14 lg:pt-4">
+                            <div class="reveal-fade">
+                                <h4 class="eyebrow text-seafoam mb-6">Reach us</h4>
+                                <ul class="space-y-3 font-light text-mist/70 text-[15px]">
+                                    <li><a href="mailto:hello@singgah-sana.com" class="footer-link">hello@singgah-sana.com</a></li>
+                                    <li><a href="https://wa.me/60166515532" target="_blank" rel="noopener" class="footer-link">+60 16 651 5532</a></li>
+                                </ul>
+                            </div>
+                            <div class="reveal-fade">
+                                <h4 class="eyebrow text-seafoam mb-6">Location</h4>
+                                <address class="not-italic font-light text-mist/70 text-[15px] leading-[1.75]">
+                                    No.3 Lorong Cheringin<br>
+                                    Kampung Janda Baik<br>
+                                    28750 Bentong, Pahang
+                                </address>
+                            </div>
+                            <div class="reveal-fade">
+                                <h4 class="eyebrow text-seafoam mb-6">Explore</h4>
+                                <ul class="space-y-3 font-light text-mist/70 text-[15px]">
+                                    <li><a href="the-estate.html" class="footer-link">The Estate</a></li>
+                                    <li><a href="stay.html" class="footer-link">Stay</a></li>
+                                    <li><a href="things-to-do.html" class="footer-link">Things to Do</a></li>
+                                    <li><a href="moments.html" class="footer-link">Moments</a></li>
+                                    <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row justify-between items-center pt-8 text-[10px] text-mist/40 uppercase tracking-[0.24em] font-medium reveal-fade">
+                        <p class="mb-4 md:mb-0">&copy; 2026 Singgah Sana. All rights reserved.</p>
+                        <div class="flex flex-wrap gap-7 justify-center">
+                            <a href="#" class="hover:text-mist transition-colors">Instagram</a>
+                            <a href="#" class="hover:text-mist transition-colors">Facebook</a>
+                            <a href="#" class="hover:text-mist transition-colors">TripAdvisor</a>
+                            <a href="#" class="hover:text-mist transition-colors">TikTok</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- LIVE CHAT -->
+    <div id="chatPanel" class="chat-panel" role="dialog" aria-label="Chat with Singgah Sana">
+        <div class="chat-header">
+            <div>
+                <div class="chat-header-title">Singgah Sana</div>
+                <div class="chat-header-status">Online · Replies within minutes</div>
+            </div>
+            <button id="chatClose" type="button" class="chat-close" aria-label="Close chat">
+                <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div id="chatBody" class="chat-body"></div>
+
+        <div class="chat-input-wrap">
+            <div class="chat-input-row">
+                <textarea id="chatInput" class="chat-input" rows="1" placeholder="Write a message..."></textarea>
+                <button id="chatSend" type="button" class="chat-send" aria-label="Send">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            Kampung Janda Baik, Pahang
+        </div>
+    </div>
+
+    <button id="chatButton" type="button" class="chat-button" aria-label="Open chat">
+        <svg viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+        </svg>
+        <span>Chat</span>
+    </button>
+
+    <!-- WHATSAPP -->
+    <a id="whatsappButton" class="whatsapp-button" href="https://wa.me/60166515532" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+    </a>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            gsap.config({ force3D: true });
+
+            const lenis = new Lenis({
+                duration: 1.15,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                smoothTouch: false,
+                touchMultiplier: 2,
+            });
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+            gsap.ticker.lagSmoothing(0);
+
+            document.body.style.overflow = "hidden";
+
+            // ============================================================
+            // LOADER — SAMA PERSIS DENGAN index.html
+            // ============================================================
+            const tlLoader = gsap.timeline({
+                onComplete: () => {
+                    document.body.style.overflow = "";
+                    const loaderEl = document.getElementById('loader');
+                    if (loaderEl) loaderEl.style.display = 'none';
+                }
+            });
+
+            tlLoader
+                .to("#loader-logo", { opacity: 1, scale: 1.5, duration: 2, ease: "power3.out" })
+                .to("#loader-logo", { opacity: 0, y: -30, duration: 1, ease: "power2.inOut" }, "+=0.4")
+                .to("#loader", { yPercent: -100, duration: 1, ease: "power3.inOut" });
+
+            // Navbar
+            let lastScroll = 0;
+            const navbar = document.getElementById('navbar');
+
+            lenis.on('scroll', (e) => {
+                const currentScroll = e.animatedScroll;
+                if (currentScroll > 50) {
+                    navbar.classList.add('bg-charcoal');
+                    navbar.classList.remove('bg-transparent');
+                    if (currentScroll > lastScroll) {
+                        navbar.classList.remove('nav-visible');
+                        navbar.classList.add('nav-hidden');
+                    } else {
+                        navbar.classList.remove('nav-hidden');
+                        navbar.classList.add('nav-visible');
+                    }
+                } else {
+                    navbar.classList.add('bg-transparent');
+                    navbar.classList.remove('bg-charcoal');
+                    navbar.classList.remove('nav-hidden');
+                    navbar.classList.add('nav-visible');
+                }
+                lastScroll = currentScroll;
+            });
+
+            // TYPOGRAPHY REVEALS
+            const splitHeadings = new SplitType('.split-text', { types: 'lines' });
+            const splitParagraphs = new SplitType('.split-text-p', { types: 'lines' });
+
+            const wrapLines = (splitInstance) => {
+                splitInstance.lines.forEach(line => {
+                    if (!line.parentElement.classList.contains('line-wrapper')) {
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('line-wrapper');
+                        line.parentNode.insertBefore(wrapper, line);
+                        wrapper.appendChild(line);
+                        gsap.set(line, { yPercent: 120, rotationZ: 2, opacity: 0 });
+                    }
+                });
+            };
+
+            wrapLines(splitHeadings);
+            wrapLines(splitParagraphs);
+
+            ScrollTrigger.batch(splitHeadings.elements, {
+                start: "top 85%",
+                onEnter: batch => {
+                    batch.forEach(el => {
+                        gsap.to(el.querySelectorAll('.line'), {
+                            yPercent: 0, rotationZ: 0, opacity: 1, duration: 1.2, stagger: 0.08, ease: "power3.out"
+                        });
+                    });
+                }
+            });
+
+            ScrollTrigger.batch(splitParagraphs.elements, {
+                start: "top 85%",
+                onEnter: batch => {
+                    batch.forEach(el => {
+                        gsap.to(el.querySelectorAll('.line'), {
+                            yPercent: 0, rotationZ: 0, opacity: 1, duration: 1, stagger: 0.04, ease: "power2.out"
+                        });
+                    });
+                }
+            });
+
+            // FADE IN
+            ScrollTrigger.batch('.reveal-fade', {
+                start: "top 90%",
+                onEnter: batch => {
+                    gsap.fromTo(batch,
+                        { y: 24, opacity: 0 },
+                        { y: 0, opacity: 1, duration: 1, stagger: 0.08, ease: "power2.out", overwrite: true }
+                    );
+                }
+            });
+
+            // ============================================================
+            // FAQ ACCORDION
+            // ============================================================
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+
+                question.addEventListener('click', () => {
+                    const isOpen = item.classList.contains('is-open');
+
+                    if (isOpen) {
+                        // Close
+                        item.classList.remove('is-open');
+                        answer.style.maxHeight = '0px';
+                    } else {
+                        // Close all others (accordion behavior)
+                        faqItems.forEach(other => {
+                            if (other !== item) {
+                                other.classList.remove('is-open');
+                                const otherAnswer = other.querySelector('.faq-answer');
+                                if (otherAnswer) otherAnswer.style.maxHeight = '0px';
+                            }
+                        });
+
+                        // Open this
+                        item.classList.add('is-open');
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    }
+                });
+            });
+
+            // Recalc open answers on resize
+            let faqResizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(faqResizeTimer);
+                faqResizeTimer = setTimeout(() => {
+                    faqItems.forEach(item => {
+                        if (item.classList.contains('is-open')) {
+                            const answer = item.querySelector('.faq-answer');
+                            if (answer) answer.style.maxHeight = answer.scrollHeight + 'px';
+                        }
+                    });
+                }, 150);
+            });
+
+            // ============================================================
+            // CATEGORY PILLS — filter FAQ items
+            // ============================================================
+            const catPills = document.querySelectorAll('.cat-pill');
+            const catHeadings = document.querySelectorAll('.faq-category');
+            const faqLists = document.querySelectorAll('.faq-list');
+
+            catPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    catPills.forEach(p => p.classList.remove('is-active'));
+                    pill.classList.add('is-active');
+
+                    const cat = pill.getAttribute('data-cat');
+
+                    // Show/hide category headings
+                    catHeadings.forEach(heading => {
+                        const headingCat = heading.getAttribute('data-category');
+                        if (cat === 'all' || headingCat === cat) {
+                            heading.style.display = '';
+                        } else {
+                            heading.style.display = 'none';
+                        }
+                    });
+
+                    // Show/hide FAQ lists
+                    faqLists.forEach(list => {
+                        const listCat = list.getAttribute('data-category');
+                        if (cat === 'all' || listCat === cat) {
+                            list.style.display = '';
+                        } else {
+                            list.style.display = 'none';
+                        }
+                    });
+
+                    // Recalc any open answers
+                    faqItems.forEach(item => {
+                        if (item.classList.contains('is-open')) {
+                            const answer = item.querySelector('.faq-answer');
+                            if (answer) answer.style.maxHeight = answer.scrollHeight + 'px';
+                        }
+                    });
+
+                    ScrollTrigger.refresh();
+                });
+            });
+
+            // SMOOTH ANCHOR SCROLL
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetId = link.getAttribute('href');
+                    if (targetId.length > 1) {
+                        const targetEl = document.querySelector(targetId);
+                        if (targetEl) {
+                            e.preventDefault();
+                            lenis.scrollTo(targetEl, { offset: -20 });
+                        }
+                    }
+                });
+            });
+
+            // Resize
+            let resizeTimer2;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer2);
+                resizeTimer2 = setTimeout(() => {
+                    splitHeadings.revert(); splitParagraphs.revert();
+                    splitHeadings.split(); splitParagraphs.split();
+                    wrapLines(splitHeadings); wrapLines(splitParagraphs);
+                    ScrollTrigger.refresh();
+                }, 200);
+            });
+
+            // ============================================================
+            // LIVE CHAT
+            // ============================================================
+            const chatPanel = document.getElementById('chatPanel');
+            const chatButton = document.getElementById('chatButton');
+            const chatClose = document.getElementById('chatClose');
+            const chatBody = document.getElementById('chatBody');
+            const chatInput = document.getElementById('chatInput');
+            const chatSend = document.getElementById('chatSend');
+
+            let isTyping = false;
+            const CHAT_STORAGE_KEY = 'singgahChatHistory_v1';
+
+            let chatHistory = [];
+            try { chatHistory = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY)) || []; }
+            catch (e) { chatHistory = []; }
+
+            function getTimeString() {
+                const now = new Date();
+                return now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            const initialBotMessages = [
+                { type: 'bot', text: 'Welcome to Singgah Sana — a private estate in Kampung Janda Baik, Pahang.', time: getTimeString() },
+                { type: 'bot', text: 'How may I assist you today?', time: getTimeString(),
+                  quickReplies: ['Book a stay', 'Things to do', 'Getting here', 'Ask a question'] }
+            ];
+
+            function getBotReply(userText) {
+                const lower = userText.toLowerCase().trim();
+
+                if (/^(hi|hello|hey|good morning|good afternoon|good evening|greetings|selamat|hai)/.test(lower)) {
+                    return { text: 'Hi there! I can help with rooms, rates, activities or getting here — what would you like to know?', quickReplies: ['Book a stay', 'Things to do', 'Getting here'] };
+                }
+                if (/(book|reserve|reservation|stay|room|pavilion|accommodation|available|availability|check.?in|check.?out)/.test(lower)) {
+                    return { text: 'We have five rooms across four pavilions — Rumah Ibu, Rumah Bunga, Rumah Rimba and Rumah Jepun — plus a shared pool and gardens.', quickReplies: ['See rooms', 'Check availability', 'Ask another question'] };
+                }
+                if (/(rate|price|cost|how much|pricing|fee)/.test(lower)) {
+                    return { text: 'Rates depend on your dates and number of guests — our team will confirm a quote within the day. You can also see our FAQ page for details.', quickReplies: ['See rooms', 'Check availability'] };
+                }
+                if (/(where|location|address|directions|how to get|janda baik|bentong|pahang|kl|kuala lumpur)/.test(lower)) {
+                    return { text: 'Singgah Sana is in Kampung Janda Baik, Bentong, Pahang — about an hour\'s drive from Kuala Lumpur.', quickReplies: ['Open in Maps', 'Airport transfer'] };
+                }
+                if (/(activit|experience|things to do|yoga|fishing|hike|hiking|picnic|walk)/.test(lower)) {
+                    return { text: 'On the estate: sunrise yoga, the pool, in-villa massage and private chef dinners. Nearby: waterfalls, natural hot springs and jungle trekking.', quickReplies: ['See experiences', 'Book a stay'] };
+                }
+                if (/(faq|question|ask|help)/.test(lower)) {
+                    return { text: 'You\'re already on our FAQ page — everything from booking to getting here is answered above. If you need more, feel free to message us directly.', quickReplies: ['Book a stay', 'Ask another question'] };
+                }
+                if (/(thank|thanks|appreciat)/.test(lower)) {
+                    return { text: 'You\'re very welcome! Is there anything else I can help with?', quickReplies: ['Book a stay', 'Goodbye'] };
+                }
+                if (/(bye|goodbye|see you|farewell)/.test(lower)) {
+                    return { text: 'Thank you for chatting with us — we hope to welcome you to Singgah Sana soon.' };
+                }
+                if (/(see room|show rooms|open rooms)/.test(lower)) {
+                    return { text: 'Taking you to our rooms now.', redirect: 'index.html#stay' };
+                }
+                if (/(see experience|see experiences)/.test(lower)) {
+                    return { text: 'Taking you to Things to Do now.', redirect: 'things-to-do-blmfix.html' };
+                }
+                if (/(see event|see events|see moments)/.test(lower)) {
+                    return { text: 'Taking you to Moments now.', redirect: 'moments-blmfix.html' };
+                }
+                if (/(map|open.*map|direction)/.test(lower)) {
+                    return { text: 'Opening our location in Maps for you now.', redirect: 'https://maps.app.goo.gl/U5hAkqrDFPQwzhny7' };
+                }
+
+                return { text: 'I may not have that answer just yet — our team can help directly via WhatsApp or the enquiry form.', quickReplies: ['Book a stay', 'Things to do', 'Getting here'] };
+            }
+
+            function renderChat() {
+                if (chatHistory.length === 0) {
+                    chatHistory = [...initialBotMessages];
+                    saveChat();
+                }
+                chatBody.innerHTML = '';
+                chatHistory.forEach(msg => {
+                    const div = document.createElement('div');
+                    div.className = `chat-msg chat-msg--${msg.type}`;
+                    const bubble = document.createElement('div');
+                    bubble.className = 'chat-msg__bubble';
+                    bubble.textContent = msg.text;
+                    div.appendChild(bubble);
+                    if (msg.quickReplies && msg.quickReplies.length > 0) {
+                        const quick = document.createElement('div');
+                        quick.className = 'chat-quick';
+                        msg.quickReplies.forEach(reply => {
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.textContent = reply;
+                            btn.addEventListener('click', () => handleQuickReply(reply));
+                            quick.appendChild(btn);
+                        });
+                        div.appendChild(quick);
+                    }
+                    const time = document.createElement('div');
+                    time.className = 'chat-msg__time';
+                    time.textContent = msg.time || '';
+                    div.appendChild(time);
+                    chatBody.appendChild(div);
+                });
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+
+            function saveChat() {
+                try { localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatHistory)); } catch (e) {}
+            }
+            function addMessage(msg) {
+                chatHistory.push(msg);
+                saveChat();
+                renderChat();
+            }
+            function showTyping() {
+                const typing = document.createElement('div');
+                typing.className = 'chat-typing';
+                typing.id = 'chatTyping';
+                typing.innerHTML = '<span></span><span></span><span></span>';
+                chatBody.appendChild(typing);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+            function hideTyping() {
+                const t = document.getElementById('chatTyping');
+                if (t) t.remove();
+            }
+
+            function handleRedirect(url) {
+                if (!url) return;
+                if (url.startsWith('http')) window.open(url, '_blank');
+                else if (url.endsWith('.html') || url.includes('.html#')) {
+                    window.location.href = url;
+                }
+                else {
+                    const targetEl = document.querySelector(url);
+                    if (targetEl) { closeChat(); lenis.scrollTo(targetEl, { offset: -10 }); }
+                }
+            }
+
+            function handleQuickReply(reply) {
+                addMessage({ type: 'user', text: reply, time: getTimeString() });
+                isTyping = true; chatSend.disabled = true;
+                setTimeout(() => showTyping(), 200);
+                setTimeout(() => {
+                    hideTyping();
+                    const botReply = getBotReply(reply);
+                    addMessage({ type: 'bot', text: botReply.text, time: getTimeString(), quickReplies: botReply.quickReplies || null });
+                    isTyping = false; chatSend.disabled = false;
+                    if (botReply.redirect) setTimeout(() => handleRedirect(botReply.redirect), 1200);
+                }, 900 + Math.random() * 500);
+            }
+
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if (!text || isTyping) return;
+                addMessage({ type: 'user', text: text, time: getTimeString() });
+                chatInput.value = '';
+                chatInput.style.height = 'auto';
+                isTyping = true; chatSend.disabled = true;
+                setTimeout(() => showTyping(), 200);
+                setTimeout(() => {
+                    hideTyping();
+                    const botReply = getBotReply(text);
+                    addMessage({ type: 'bot', text: botReply.text, time: getTimeString(), quickReplies: botReply.quickReplies || null });
+                    isTyping = false; chatSend.disabled = false;
+                    if (botReply.redirect) setTimeout(() => handleRedirect(botReply.redirect), 1200);
+                }, 900 + Math.random() * 600);
+            }
+
+            function openChat() {
+                chatPanel.classList.add('is-open');
+                chatButton.classList.add('is-hidden');
+                document.body.classList.add('chat-open');
+                setTimeout(() => chatInput.focus(), 400);
+            }
+            function closeChat() {
+                chatPanel.classList.remove('is-open');
+                chatButton.classList.remove('is-hidden');
+                document.body.classList.remove('chat-open');
+            }
+
+            chatButton.addEventListener('click', openChat);
+            chatClose.addEventListener('click', closeChat);
+            chatSend.addEventListener('click', sendMessage);
+
+            chatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+            });
+            chatInput.addEventListener('input', () => {
+                chatInput.style.height = 'auto';
+                chatInput.style.height = Math.min(chatInput.scrollHeight, 80) + 'px';
+            });
+
+            renderChat();
+        });
+    </script>
+</body>
+</html>
